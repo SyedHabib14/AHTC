@@ -1,0 +1,8 @@
+﻿CREATE SEQUENCE OrderCounter
+	AS INT
+	START WITH 2
+	INCREMENT BY 2 
+
+CREATE TABLE ShoppingCart (OrderID INT PRIMARY KEY IDENTITY (1, 1), OrderNo INT NOT NULL, DATE_TIME DATETIME NOT NULL,
+			  Product_ID INT NOT NULL FOREIGN KEY REFERENCES Products(PID) ON Delete Cascade, CustomerID INT NOT NULL FOREIGN KEY REFERENCES Buyers(BID) ON Delete Cascade, 
+			  Quantity INT NOT NULL DEFAULT 1, IsInCart VARCHAR (14) CHECK (IsInCart in ('Added', 'Not Added','In Progress')));

@@ -1,0 +1,42 @@
+ Sqlconn.Open();
+            string insert = "Insert Into ShoppingCart (OrderNo, DATE_TIME, Product_ID, CustomerID, Quantity) VALUES ((ABS(checksum(NewId()) % 10000)), GETDATE(), '" + ProductID.Text + "', '" + CustomerID.Text + "', '" + Quantity.Text + "');";
+            SqlCommand cmd = new SqlCommand(insert, Sqlconn);
+            cmd.ExecuteNonQuery();
+            Sqlconn.Close();
+            bt6Check = true;
+
+            if (bt6Check == true)
+            {
+                Sqlconn.Open();
+                string query = "UPDATE ShoppingCart SET IsInCart = 'Added' WHERE OrderID = OrderID";
+                SqlCommand new_cmd = new SqlCommand(query, Sqlconn);
+                int a = new_cmd.ExecuteNonQuery();
+                Sqlconn.Close();
+                status.Text = "PRODUCT ADDED";
+                bt6Check = false;
+            }
+
+            else
+            {
+                Sqlconn.Open();
+                string query = "UPDATE ShoppingCart SET IsInCart = 'Not Added' WHERE OrderID = OrderID";
+                SqlCommand new_cmd = new SqlCommand(query, Sqlconn);
+                int a = new_cmd.ExecuteNonQuery();
+                Sqlconn.Close();
+                status.Text = "NO PRODUCT ADDED";
+            }
+
+
+public void disp_data ()
+        {
+            Sqlconn.Open();
+            string Command = "SELECT * FROM Products";
+            SqlCommand cmd = new SqlCommand(Command, Sqlconn);
+            cmd.ExecuteNonQuery();
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            da.Fill(dt);
+            dataGridView1.DataSource = dt;
+            
+            Sqlconn.Close();
+        }
